@@ -1,4 +1,4 @@
-package be.vb.storingenmelder.dto;
+package be.vb.storingenmelder.dto.province;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

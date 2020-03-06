@@ -1,6 +1,6 @@
 package be.vb.storingenmelder.services;
 
-import be.vb.storingenmelder.services.ProvinceImportService;
+import be.vb.storingenmelder.services.importservices.ProvinceImportService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

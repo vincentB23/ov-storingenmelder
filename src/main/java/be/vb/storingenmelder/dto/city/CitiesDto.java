@@ -1,5 +1,6 @@
-package be.vb.storingenmelder.dto;
+package be.vb.storingenmelder.dto.city;
 
+import be.vb.storingenmelder.dto.city.CityDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

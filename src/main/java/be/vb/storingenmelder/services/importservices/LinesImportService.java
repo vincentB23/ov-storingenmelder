@@ -1,9 +1,9 @@
-package be.vb.storingenmelder.services;
+package be.vb.storingenmelder.services.importservices;
 
 import be.vb.storingenmelder.domain.Line;
 import be.vb.storingenmelder.domain.Province;
-import be.vb.storingenmelder.dto.LineDto;
-import be.vb.storingenmelder.dto.LinesDto;
+import be.vb.storingenmelder.dto.line.LineDto;
+import be.vb.storingenmelder.dto.line.LinesDto;
 import be.vb.storingenmelder.repository.LineRepository;
 import be.vb.storingenmelder.repository.ProvinceRepository;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public class LinesImportService {
         logger.info("Importing lines has started.");
 
         for (int i = 1; i <= 5; i++) {
-            Province province = provinceRepository.findById(i).orElseThrow();
+            Province province = provinceRepository.findById((long) i).orElseThrow();
             ResponseEntity<LinesDto> response = restTemplate.getForEntity(BASE_URL, LinesDto.class, i);
             List<LineDto> lineDtoList = response.getBody().getLineDtoList();
             lineDtoList.forEach(

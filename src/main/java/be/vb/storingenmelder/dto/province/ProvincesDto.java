@@ -1,7 +1,8 @@
-package be.vb.storingenmelder.dto;
+package be.vb.storingenmelder.dto.province;
 
 import java.util.List;
 
+import be.vb.storingenmelder.dto.province.ProvinceDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -10,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
         "entiteiten"
 })
-public class EntitiesDto {
+public class ProvincesDto {
 
     @JsonProperty("entiteiten")
     private List<ProvinceDto> provinceDtoList = null;

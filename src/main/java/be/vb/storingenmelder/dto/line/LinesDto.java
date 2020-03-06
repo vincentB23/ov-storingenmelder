@@ -1,5 +1,6 @@
-package be.vb.storingenmelder.dto;
+package be.vb.storingenmelder.dto.line;
 
+import be.vb.storingenmelder.dto.line.LineDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

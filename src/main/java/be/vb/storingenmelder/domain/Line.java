@@ -6,9 +6,11 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 
 @Entity
-@IdClass(LineId.class)
 public class Line {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "LineId")
+    private Long id;
     @Column(name = "LineNumber")
     private int number;
     @Column(name = "LineNumberPublic")
@@ -22,9 +24,8 @@ public class Line {
     @Column(name = "LineServiceType")
     private String serviceType;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ProvinceNumber", nullable = false)
-    @Id
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "ProvinceId", nullable = false)
     private Province province;
 
     public Line() {
@@ -38,5 +39,17 @@ public class Line {
         this.transportType = transportType;
         this.serviceType = serviceType;
         this.province = province;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Province getProvince() {
+        return province;
+    }
+
+    public int getNumber() {
+        return number;
     }
 }

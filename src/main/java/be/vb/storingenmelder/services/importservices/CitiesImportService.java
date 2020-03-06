@@ -1,9 +1,9 @@
-package be.vb.storingenmelder.services;
+package be.vb.storingenmelder.services.importservices;
 
 import be.vb.storingenmelder.domain.City;
 import be.vb.storingenmelder.domain.Province;
-import be.vb.storingenmelder.dto.CitiesDto;
-import be.vb.storingenmelder.dto.CityDto;
+import be.vb.storingenmelder.dto.city.CitiesDto;
+import be.vb.storingenmelder.dto.city.CityDto;
 import be.vb.storingenmelder.repository.CityRepository;
 import be.vb.storingenmelder.repository.ProvinceRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class CitiesImportService {
         logger.info("Importing cities has started.");
 
         for (int i = 1; i <= 5; i++) {
-            Province province = provinceRepository.findById(i).orElseThrow();
+            Province province = provinceRepository.findById((long) i).orElseThrow();
             ResponseEntity<CitiesDto> response = restTemplate.getForEntity(BASE_URL, CitiesDto.class, i);
             List<CityDto> cityDtoList = response.getBody().getCityDtoList();
             cityDtoList.forEach(

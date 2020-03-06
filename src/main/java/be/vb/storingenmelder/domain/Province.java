@@ -14,6 +14,9 @@ import java.util.Set;
 @Entity
 public class Province {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ProvinceId")
+    private Long id;
     @Column(name = "ProvinceNumber")
     private int number;
     @Column(name = "ProvinceCode")
@@ -30,5 +33,13 @@ public class Province {
         this.number = number;
         this.code = code;
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public int getNumber() {
+        return number;
     }
 }

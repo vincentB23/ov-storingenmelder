@@ -11,12 +11,15 @@ import javax.persistence.*;
 @Entity
 public class City {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CityId")
+    private Long id;
     @Column(name = "CityNumber")
     private int number;
     @Column(name = "CityName")
     private String name;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ProvinceNumber", nullable = false)
+    @JoinColumn(name = "ProvinceId", nullable = false)
     private Province province;
 
     public City() {
