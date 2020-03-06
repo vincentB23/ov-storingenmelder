@@ -1,21 +1,22 @@
-package be.vb.storingenmelder.domain;
+package be.vb.storingenmelder.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Data
-@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("gemeenten")
-public class Cities {
-    @Id
+public class CityDto {
     @JsonProperty("gemeentenummer")
     private int number;
     @JsonProperty("omschrijving")
     private String name;
+
+    public int getNumber() {
+        return number;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

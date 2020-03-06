@@ -2,7 +2,9 @@ package be.vb.storingenmelder.services;
 
 import be.vb.storingenmelder.domain.Province;
 import be.vb.storingenmelder.dto.EntitiesDto;
+import be.vb.storingenmelder.dto.ProvinceDto;
 import be.vb.storingenmelder.repository.ProvinceRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +31,12 @@ public class ProvinceImportService {
         logger.info("Importing entities has started.");
 
         ResponseEntity<EntitiesDto> entiteitenDto = restTemplate.getForEntity(BASE_URL, EntitiesDto.class);
-        List<Province> provinces = entiteitenDto.getBody().getEntiteiten();
-        provinces.forEach(
-                repository::save
+        List<ProvinceDto> provinceDtoList = entiteitenDto.getBody().getProvinceDtoList();
+        provinceDtoList.forEach(
+                provinceDto -> {
+                    Province province = new Province(provinceDto.getNumber(), provinceDto.getCode(), provinceDto.getName());
+                    repository.save(province);
+                }
         );
         logger.info("Importing entities has finished.");
     }

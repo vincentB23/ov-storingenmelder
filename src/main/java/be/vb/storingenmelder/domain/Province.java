@@ -5,20 +5,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeName("entiteiten")
 public class Province {
     @Id
-    @JsonProperty("entiteitnummer")
+    @Column(name = "ProvinceNumber")
     private int number;
-    @JsonProperty("entiteitcode")
+    @Column(name = "ProvinceCode")
     private String code;
-    @JsonProperty("omschrijving")
+    @Column(name = "ProvinceName")
     private String name;
+    @OneToMany(mappedBy = "province", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<City> cities;
+
+    public Province() {
+    }
+
+    public Province(int number, String code, String name) {
+        this.number = number;
+        this.code = code;
+        this.name = name;
+    }
 }

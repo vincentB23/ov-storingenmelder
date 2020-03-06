@@ -1,21 +1,20 @@
 package be.vb.storingenmelder.dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.List;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "entiteiten"
+        "gemeenten"
 })
-public class EntitiesDto {
+public class CitiesDto {
+    @JsonProperty("gemeenten")
+    private List<CityDto> cityDtoList = null;
 
-    @JsonProperty("entiteiten")
-    private List<ProvinceDto> provinceDtoList = null;
-
-    public List<ProvinceDto> getProvinceDtoList() {
-        return provinceDtoList;
+    public List<CityDto> getCityDtoList() {
+        return cityDtoList;
     }
 }
