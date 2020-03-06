@@ -28,7 +28,7 @@ public class ProvinceImportService {
     }
 
     public void importEntities() {
-        logger.info("Importing entities has started.");
+        logger.info("Importing provinces has started.");
 
         ResponseEntity<EntitiesDto> entiteitenDto = restTemplate.getForEntity(BASE_URL, EntitiesDto.class);
         List<ProvinceDto> provinceDtoList = entiteitenDto.getBody().getProvinceDtoList();
@@ -38,6 +38,6 @@ public class ProvinceImportService {
                     repository.save(province);
                 }
         );
-        logger.info("Importing entities has finished.");
+        logger.info("Importing provinces has finished.");
     }
 }

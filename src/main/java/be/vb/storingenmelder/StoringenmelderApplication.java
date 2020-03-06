@@ -1,6 +1,7 @@
 package be.vb.storingenmelder;
 
 import be.vb.storingenmelder.services.CitiesImportService;
+import be.vb.storingenmelder.services.LinesImportService;
 import be.vb.storingenmelder.services.ProvinceImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -15,6 +16,8 @@ public class StoringenmelderApplication implements CommandLineRunner {
 	private ProvinceImportService provinceImportService;
 	@Autowired
 	private CitiesImportService citiesImportService;
+	@Autowired
+	private LinesImportService linesImportService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(StoringenmelderApplication.class, args);
@@ -24,5 +27,6 @@ public class StoringenmelderApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		provinceImportService.importEntities();
 		citiesImportService.importCities();
+		linesImportService.importLines();
 	}
 }

@@ -35,7 +35,7 @@ public class CitiesImportService {
         logger.info("Importing cities has started.");
 
         for (int i = 1; i <= 5; i++) {
-            Province province = provinceRepository.findById(i).get();
+            Province province = provinceRepository.findById(i).orElseThrow();
             ResponseEntity<CitiesDto> response = restTemplate.getForEntity(BASE_URL, CitiesDto.class, i);
             List<CityDto> cityDtoList = response.getBody().getCityDtoList();
             cityDtoList.forEach(
