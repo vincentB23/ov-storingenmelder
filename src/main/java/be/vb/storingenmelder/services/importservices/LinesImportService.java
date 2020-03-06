@@ -48,6 +48,7 @@ public class LinesImportService {
                                 province
                         );
                         lineRepository.save(line);
+                        logger.info("Imported line with number={} and provinceName={}", lineDto.getNumber(), province.getName());
                     }
             );
 

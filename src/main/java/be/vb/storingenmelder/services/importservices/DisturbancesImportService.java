@@ -51,6 +51,7 @@ public class DisturbancesImportService {
                 disturbanceDto -> {
                     Disturbance disturbance = new Disturbance(disturbanceDto.getTitle(), disturbanceDto.getDescription(), line, direction);
                     disturbanceRepository.save(disturbance);
+                    logger.info("Imported disturbance with title={}, lineNr={}, lineProvince={}", disturbanceDto.getTitle(), line.getNumber(), line.getProvince().getName());
                 }
         );
     }

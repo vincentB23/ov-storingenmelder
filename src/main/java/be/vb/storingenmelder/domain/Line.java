@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Line {
@@ -24,9 +25,12 @@ public class Line {
     @Column(name = "LineServiceType")
     private String serviceType;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ProvinceId", nullable = false)
     private Province province;
+
+    @OneToMany(mappedBy = "line", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<LineDirection> lineDirections;
 
     public Line() {
     }
@@ -51,5 +55,9 @@ public class Line {
 
     public int getNumber() {
         return number;
+    }
+
+    public Set<LineDirection> getLineDirections() {
+        return lineDirections;
     }
 }

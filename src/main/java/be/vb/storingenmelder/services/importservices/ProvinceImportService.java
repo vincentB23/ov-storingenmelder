@@ -35,6 +35,7 @@ public class ProvinceImportService {
                 provinceDto -> {
                     Province province = new Province(provinceDto.getNumber(), provinceDto.getCode(), provinceDto.getName());
                     repository.save(province);
+                    logger.info("Imported province with name={}", provinceDto.getName());
                 }
         );
         logger.info("Importing provinces has finished.");

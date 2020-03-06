@@ -42,6 +42,7 @@ public class CitiesImportService {
                     cityDto -> {
                         City city = new City(cityDto.getNumber(), cityDto.getName(), province);
                         cityRepository.save(city);
+                        logger.info("Imported city with name={}", cityDto.getName());
                     }
             );
         }

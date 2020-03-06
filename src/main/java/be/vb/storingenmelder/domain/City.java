@@ -18,7 +18,7 @@ public class City {
     private int number;
     @Column(name = "CityName")
     private String name;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "ProvinceId", nullable = false)
     private Province province;
 
@@ -29,5 +29,9 @@ public class City {
         this.number = number;
         this.name = name;
         this.province = province;
+    }
+
+    public Province getProvince() {
+        return province;
     }
 }
