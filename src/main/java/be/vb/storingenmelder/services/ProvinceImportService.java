@@ -1,7 +1,7 @@
 package be.vb.storingenmelder.services;
 
 import be.vb.storingenmelder.domain.Province;
-import be.vb.storingenmelder.dto.EntiteitenDto;
+import be.vb.storingenmelder.dto.EntitiesDto;
 import be.vb.storingenmelder.repository.ProvinceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class ProvinceImportService {
     public void importEntities() {
         logger.info("Importing entities has started.");
 
-        ResponseEntity<EntiteitenDto> entiteitenDto = restTemplate.getForEntity(BASE_URL, EntiteitenDto.class);
+        ResponseEntity<EntitiesDto> entiteitenDto = restTemplate.getForEntity(BASE_URL, EntitiesDto.class);
         List<Province> provinces = entiteitenDto.getBody().getEntiteiten();
         provinces.forEach(
                 repository::save

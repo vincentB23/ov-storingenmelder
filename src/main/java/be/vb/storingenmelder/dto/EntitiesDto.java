@@ -13,7 +13,7 @@ import lombok.Getter;
 @JsonPropertyOrder({
         "entiteiten"
 })
-public class EntiteitenDto {
+public class EntitiesDto {
 
     @JsonProperty("entiteiten")
     private List<Province> entiteiten = null;
