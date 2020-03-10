@@ -8,10 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,21 +60,26 @@ public class TwitterService {
         return twitter;
     }
 
+    @Scheduled(fixedRate = 120000, initialDelayString = "${fixed-delay.in.milliseconds}")
     public void readDeLijnTwitterFeed() throws TwitterException {
+        log.info("Started reading the twitter feed.");
+
         Paging paging = new Paging();
         paging.setCount(50);
 
         ResponseList<Status> list = twitter.getUserTimeline("delijn", paging);
         list.forEach(
                 status -> {
+                    LocalDateTime createdAt = convertDate(status.getCreatedAt());
                     List<String> hashtags = getHashtagsFromStatus(status);
-                    if (hashtags.contains("verstoring")) {
+
+                    if (hashtags.contains("verstoring") && (!tweetRepository.existsTweetByCreatedAt(createdAt))) {
                         hashtags.remove("delijn");
                         hashtags.remove("verstoring");
                         Province province = getProvinceFromStatus(hashtags);
                         List<LineDirection> lineDirections = getLineDirectionsFromStatus(status, province);
 
-                        Tweet tweet = new Tweet(status.getText(), status.getCreatedAt());
+                        Tweet tweet = new Tweet(status.getText(), createdAt);
                         lineDirections.forEach(
                                 lineDirection -> {
                                     lineDirection.getTweets().add(tweet);
@@ -85,6 +93,14 @@ public class TwitterService {
                     }
                 }
         );
+
+        log.info("Finished reading the twitter feed.");
+    }
+
+    private LocalDateTime convertDate(Date createdAt) {
+        return createdAt.toInstant()
+                .atZone(ZoneId.of("Europe/Brussels"))
+                .toLocalDateTime();
     }
 
     private List<LineDirection> getLineDirectionsFromStatus(Status status, Province province) {

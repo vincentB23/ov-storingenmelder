@@ -27,11 +27,9 @@ public class Tweet {
     public Tweet() {
     }
 
-    public Tweet(String text, Date createdAt) {
+    public Tweet(String text, LocalDateTime createdAt) {
         this.text = text;
-        this.createdAt = createdAt.toInstant()
-            .atZone(ZoneId.of("Europe/Brussels"))
-            .toLocalDateTime();
+        this.createdAt = createdAt;
     }
 
 /*    public List<LineDirection> getLineDirections() {

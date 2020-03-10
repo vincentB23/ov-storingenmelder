@@ -1,5 +1,6 @@
 package be.vb.storingenmelder;
 
+import be.vb.storingenmelder.configuration.ConfigProperties;
 import be.vb.storingenmelder.services.importservices.*;
 import be.vb.storingenmelder.services.twitter.TwitterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories
 public class StoringenmelderApplication implements CommandLineRunner {
+	@Autowired
+	private ConfigProperties config;
 	@Autowired
 	private ProvinceImportService provinceImportService;
 	@Autowired
@@ -33,9 +36,9 @@ public class StoringenmelderApplication implements CommandLineRunner {
 		provinceImportService.importEntities();
 		citiesImportService.importCities();
 		linesImportService.importLines();
-		lineDirectionsImportService.importLineDirections(25);
+		lineDirectionsImportService.importLineDirections(config.getCountTweets());
 		//disturbancesImportService.importAllDisturbances();
 
-		twitterService.readDeLijnTwitterFeed();
+		//twitterService.readDeLijnTwitterFeed();
 	}
 }
