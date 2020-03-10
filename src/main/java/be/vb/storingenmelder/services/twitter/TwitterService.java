@@ -2,9 +2,12 @@ package be.vb.storingenmelder.services.twitter;
 
 import be.vb.storingenmelder.configuration.ConfigProperties;
 import be.vb.storingenmelder.domain.*;
+import be.vb.storingenmelder.event.NewTweetEvent;
 import be.vb.storingenmelder.repository.*;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
@@ -14,26 +17,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
+@Slf4j
 public class TwitterService {
-    private static final Logger logger = LoggerFactory.getLogger(TwitterService.class);
     private ProvinceRepository provinceRepository;
     private TweetRepository tweetRepository;
     private LineRepository lineRepository;
     private CityRepository cityRepository;
     private ConfigProperties configProperties;
     private Twitter twitter = null;
+    private ApplicationEventPublisher applicationEventPublisher;
 
-    public TwitterService(ProvinceRepository provinceRepository, TweetRepository tweetRepository, LineRepository lineRepository, CityRepository cityRepository, ConfigProperties configProperties) {
+    public TwitterService(ProvinceRepository provinceRepository, TweetRepository tweetRepository, LineRepository lineRepository, CityRepository cityRepository, ConfigProperties configProperties, ApplicationEventPublisher applicationEventPublisher) {
         this.provinceRepository = provinceRepository;
         this.tweetRepository = tweetRepository;
         this.lineRepository = lineRepository;
         this.cityRepository = cityRepository;
         this.configProperties = configProperties;
+        this.applicationEventPublisher = applicationEventPublisher;
 
         try {
             twitter = initTwitter();
         } catch (TwitterException e) {
-            logger.warn("An exception has occured trying to initialize Twitter: " + e.getErrorMessage());
+            log.warn("An exception has occured trying to initialize Twitter: " + e.getErrorMessage());
             System.exit(1);
         }
 
@@ -59,7 +64,6 @@ public class TwitterService {
         ResponseList<Status> list = twitter.getUserTimeline("delijn", paging);
         list.forEach(
                 status -> {
-                    logger.info(status.toString());
                     List<String> hashtags = getHashtagsFromStatus(status);
                     if (hashtags.contains("verstoring")) {
                         hashtags.remove("delijn");
@@ -75,8 +79,9 @@ public class TwitterService {
                                 }
                         );
 
-                        tweetRepository.save(tweet);
-                        logger.info("Imported tweet with text={}, lines={}", status.getText(), lineDirections.toString());
+                        Tweet newTweet = tweetRepository.save(tweet);
+                        publishEvent(newTweet);
+                        log.info("Imported tweet with id={}", newTweet.getId());
                     }
                 }
         );
@@ -87,10 +92,16 @@ public class TwitterService {
         Pattern p = Pattern.compile("\\d+");
         Matcher m = p.matcher(status.getText());
         while (m.find()) {
-            int lineNumber = Integer.parseInt(m.group());
+            String number = m.group();
+            int lineNumber = Integer.parseInt(number);
             Line line = lineRepository.findByNumberAndProvince(lineNumber, province);
             if (line != null) {
                 lines.add(line);
+            } else {
+                line = lineRepository.findByNumberPublicAndProvince(number, province);
+                if (line != null) {
+                    lines.add(line);
+                }
             }
         }
 
@@ -109,12 +120,15 @@ public class TwitterService {
 
         List<Province> provincesInStatus = new ArrayList<>();
         for (String hashtag : hashtags) {
-            City city = cityRepository.findDistinctFirstByName(hashtag.toUpperCase());
+            log.debug("hashtag: " + hashtag);
+            City city = cityRepository.findDistinctFirstByNameContaining(hashtag.toUpperCase());
             if (city != null) {
+                log.info("city: " + city.getName());
                 provincesInStatus.add(city.getProvince());
             }
         }
 
+        provincesInStatus.forEach(province -> log.debug("province in status: " + province.getName()));
         for (Province province : provinces) {
             int count = Collections.frequency(provincesInStatus, province);
             if (count > highestCount) {
@@ -123,6 +137,7 @@ public class TwitterService {
             }
         }
 
+        log.info("province with highest count: " + provinceWithHighestCount.getName());
         return provinceWithHighestCount;
     }
 
@@ -135,5 +150,10 @@ public class TwitterService {
         }
 
         return hashtags;
+    }
+
+    private void publishEvent(Tweet tweet) {
+        NewTweetEvent newTweetEvent = new NewTweetEvent(this, tweet);
+        applicationEventPublisher.publishEvent(newTweetEvent);
     }
 }

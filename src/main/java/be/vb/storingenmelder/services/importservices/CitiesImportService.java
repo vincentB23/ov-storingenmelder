@@ -40,9 +40,11 @@ public class CitiesImportService {
             List<CityDto> cityDtoList = response.getBody().getCityDtoList();
             cityDtoList.forEach(
                     cityDto -> {
-                        City city = new City(cityDto.getNumber(), cityDto.getName(), province);
-                        cityRepository.save(city);
-                        logger.info("Imported city with name={}", cityDto.getName());
+                        if (cityDto.getNumber() != 1122) {
+                            City city = new City(cityDto.getNumber(), cityDto.getName(), province);
+                            cityRepository.save(city);
+                            logger.info("Imported city with name={}", cityDto.getName());
+                        }
                     }
             );
         }

@@ -1,8 +1,11 @@
 package be.vb.storingenmelder.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
 public class Disturbance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +32,6 @@ public class Disturbance {
         this.line = line;
         this.lineDirection = lineDirection;
     }
+
+
 }

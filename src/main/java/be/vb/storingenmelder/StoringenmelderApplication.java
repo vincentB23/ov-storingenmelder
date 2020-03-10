@@ -33,8 +33,8 @@ public class StoringenmelderApplication implements CommandLineRunner {
 		provinceImportService.importEntities();
 		citiesImportService.importCities();
 		linesImportService.importLines();
-		lineDirectionsImportService.importLineDirections(15);
-		disturbancesImportService.importAllDisturbances();
+		lineDirectionsImportService.importLineDirections(25);
+		//disturbancesImportService.importAllDisturbances();
 
 		twitterService.readDeLijnTwitterFeed();
 	}

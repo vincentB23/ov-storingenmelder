@@ -4,6 +4,6 @@ import be.vb.storingenmelder.domain.City;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CityRepository extends JpaRepository<City, Long> {
-    City findDistinctByName(String name);
     City findDistinctFirstByName(String name);
+    City findDistinctFirstByNameContaining(String name);
 }

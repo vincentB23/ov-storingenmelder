@@ -1,4 +1,4 @@
-package be.vb.storingenmelder.dto.disturbance;
+package be.vb.storingenmelder.dto.disturbance.incoming;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

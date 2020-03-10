@@ -2,11 +2,13 @@ package be.vb.storingenmelder.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Getter
 public class Line {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,21 +45,5 @@ public class Line {
         this.transportType = transportType;
         this.serviceType = serviceType;
         this.province = province;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Province getProvince() {
-        return province;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public Set<LineDirection> getLineDirections() {
-        return lineDirections;
     }
 }
