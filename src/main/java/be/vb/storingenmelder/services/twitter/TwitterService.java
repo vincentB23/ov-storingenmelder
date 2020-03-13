@@ -110,11 +110,11 @@ public class TwitterService {
         while (m.find()) {
             String number = m.group();
             int lineNumber = Integer.parseInt(number);
-            Line line = lineRepository.findByNumberAndProvince(lineNumber, province);
+            Line line = lineRepository.findFirstByNumberAndProvince(lineNumber, province);
             if (line != null) {
                 lines.add(line);
             } else {
-                line = lineRepository.findByNumberPublicAndProvince(number, province);
+                line = lineRepository.findFirstByNumberPublicAndProvince(number, province);
                 if (line != null) {
                     lines.add(line);
                 }

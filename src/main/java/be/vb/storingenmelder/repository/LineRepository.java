@@ -5,6 +5,6 @@ import be.vb.storingenmelder.domain.Province;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LineRepository extends JpaRepository<Line, Long> {
-    Line findByNumberAndProvince(int number, Province province);
-    Line findByNumberPublicAndProvince(String number, Province province);
+    Line findFirstByNumberAndProvince(int number, Province province);
+    Line findFirstByNumberPublicAndProvince(String number, Province province);
 }
